@@ -5,37 +5,37 @@ import os
 
 app = FastAPI()
 
-CIBIL_SCORE_DB = "cibil_scores.json"
+REPORT_DB = "reports.json"
 
-# Model for CIBIL Score data
-class CIBILScore(BaseModel):
+# Model for report data
+class Report(BaseModel):
     user_id: str
-    credit_score: float
-    income: float
-    debt: float
+    cibil_score: float
+    financial_score: float
+    recommendation: str
 
-# Load CIBIL scores from JSON file
-def load_cibil_scores():
-    if os.path.exists(CIBIL_SCORE_DB):
-        with open(CIBIL_SCORE_DB, "r") as f:
+# Load reports from JSON file
+def load_reports():
+    if os.path.exists(REPORT_DB):
+        with open(REPORT_DB, "r") as f:
             return json.load(f)
     return {}
 
-# Save CIBIL scores to JSON file
-def save_cibil_scores(scores):
-    with open(CIBIL_SCORE_DB, "w") as f:
-        json.dump(scores, f)
+# Save reports to JSON file
+def save_reports(reports):
+    with open(REPORT_DB, "w") as f:
+        json.dump(reports, f)
 
-@app.post("/cibil-score")
-def calculate_cibil_score(score_data: CIBILScore):
-    cibil_scores = load_cibil_scores()
-    cibil_scores[score_data.user_id] = score_data.dict()
-    save_cibil_scores(cibil_scores)
-    return {"message": "CIBIL score calculated and saved successfully"}
+@app.post("/generate-report")
+def generate_report(report_data: Report):
+    reports = load_reports()
+    reports[report_data.user_id] = report_data.dict()
+    save_reports(reports)
+    return {"message": "Report generated successfully"}
 
-@app.get("/cibil-score/{user_id}")
-def get_cibil_score(user_id: str):
-    cibil_scores = load_cibil_scores()
-    if user_id not in cibil_scores:
-        raise HTTPException(status_code=404, detail="User not found")
-    return cibil_scores[user_id]
+@app.get("/generate-report/{user_id}")
+def get_report(user_id: str):
+    reports = load_reports()
+    if user_id not in reports:
+        raise HTTPException(status_code=404, detail="User report not found")
+    return reports[user_id]
