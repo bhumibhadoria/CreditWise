@@ -1,38 +1,41 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import json
+import os
 
 app = FastAPI()
 
-USER_DB = "users.json"
+CIBIL_SCORE_DB = "cibil_scores.json"
 
-class User(BaseModel):
-    username: str
-    password: str
+# Model for CIBIL Score data
+class CIBILScore(BaseModel):
+    user_id: str
+    credit_score: float
+    income: float
+    debt: float
 
-def load_users():
-    try:
-        with open(USER_DB, "r") as f:
+# Load CIBIL scores from JSON file
+def load_cibil_scores():
+    if os.path.exists(CIBIL_SCORE_DB):
+        with open(CIBIL_SCORE_DB, "r") as f:
             return json.load(f)
-    except:
-        return {}
+    return {}
 
-def save_users(users):
-    with open(USER_DB, "w") as f:
-        json.dump(users, f)
+# Save CIBIL scores to JSON file
+def save_cibil_scores(scores):
+    with open(CIBIL_SCORE_DB, "w") as f:
+        json.dump(scores, f)
 
-@app.post("/register")
-def register(user: User):
-    users = load_users()
-    if user.username in users:
-        raise HTTPException(status_code=400, detail="User already exists")
-    users[user.username] = user.password
-    save_users(users)
-    return {"message": "User registered successfully"}
+@app.post("/cibil-score")
+def calculate_cibil_score(score_data: CIBILScore):
+    cibil_scores = load_cibil_scores()
+    cibil_scores[score_data.user_id] = score_data.dict()
+    save_cibil_scores(cibil_scores)
+    return {"message": "CIBIL score calculated and saved successfully"}
 
-@app.post("/login")
-def login(user: User):
-    users = load_users()
-    if users.get(user.username) == user.password:
-        return {"message": "Login successful"}
-    raise HTTPException(status_code=401, detail="Invalid credentials")
+@app.get("/cibil-score/{user_id}")
+def get_cibil_score(user_id: str):
+    cibil_scores = load_cibil_scores()
+    if user_id not in cibil_scores:
+        raise HTTPException(status_code=404, detail="User not found")
+    return cibil_scores[user_id]
