@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  user_input:
+    build:
+      context: ./user_input
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./user_input:/app
+    networks:
+      - cibil_network
+
+  financial_service:
+    build:
+      context: ./financial_service
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./financial_service:/app
+    networks:
+      - cibil_network
+
+  cibil_score_service:
+    build:
+      context: ./cibil_score_service
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./cibil_score_service:/app
+    networks:
+      - cibil_network
+
+  report_generation:
+    build:
+      context: ./report_generation
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./report_generation:/app
+    networks:
+      - cibil_network
+
+networks:
+  cibil_network:
+    driver: bridge
