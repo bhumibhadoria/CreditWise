@@ -1,6 +1,6 @@
 import joblib
 import pandas as pd
-from utils import prepare_features
+from ml_model.utils import prepare_features  # Use full package path
 
 def load_model():
     model = joblib.load('model.pkl')
@@ -39,7 +39,7 @@ def predict_risk(data):
     }
 
 # Example usage
-if __name__ == "__main__":
+if __name__ == "__main__": 
     sample_data = {
         'Annual_Revenue': 1000000,
         'Loan_Amount': 500000,
