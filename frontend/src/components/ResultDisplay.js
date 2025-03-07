@@ -25,10 +25,7 @@ function ResultDisplay() {
         Risk Score: {result.risk_score.toFixed(2)}
       </Typography>
       <Typography>
-        Risk Category: {result.risk_category}
-      </Typography>
-      <Typography>
-        {result.assessment_details}
+        Recommendation: {result.recommendation}
       </Typography>
     </StyledPaper>
   );

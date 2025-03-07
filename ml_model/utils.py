@@ -20,3 +20,5 @@ def preprocess_data(df):
 def prepare_features(df):
     # Drop the target variable if present
     return df.drop('Past_Default', axis=1) if 'Past_Default' in df.columns else df
+
+# Add any other utility functions used in predict.py
