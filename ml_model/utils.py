@@ -2,14 +2,11 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 def preprocess_data(df):
-    # Encode categorical variables
     df['GST_Compliance'] = df['GST_Compliance'].map({'High': 2, 'Medium': 1, 'Low': 0})
     df['Market_Trend'] = df['Market_Trend'].map({'Growth': 2, 'Stable': 1, 'Declining': 0})
     
-    # One-hot encode Industry_Sector
     df = pd.get_dummies(df, columns=['Industry_Sector'], prefix='Industry')
     
-    # Normalize numerical columns
     scaler = StandardScaler()
     numerical_columns = ['Annual_Revenue', 'Loan_Amount', 'Credit_Score', 'Business_Age', 
                          'Num_Employees', 'Monthly_Burn_Rate', 'Current_Ratio']
@@ -18,5 +15,4 @@ def preprocess_data(df):
     return df, scaler
 
 def prepare_features(df):
-    # Drop the target variable if present
     return df.drop('Past_Default', axis=1) if 'Past_Default' in df.columns else df
