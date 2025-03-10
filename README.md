@@ -16,7 +16,13 @@ CreditWise assesses the creditworthiness of startups, MSMEs, and small businesse
 - **Backend**: FastAPI, Flask, Pandas, Scikit-learn
 - **ML Models**: Random Forest, Gradient Boosting (XGBoost)
 
+## Results
+
+![WhatsApp Image 2025-03-07 at 12 11 17_cb8fc08a](https://github.com/user-attachments/assets/3d0fcf19-51d6-4ac0-8278-a7678e7ff750)
+![WhatsApp Image 2025-03-07 at 11 21 15_f788b337](https://github.com/user-attachments/assets/e375f28e-270e-4f57-8d87-1cfda459a496)
+
 ## Getting Started
+
 ### Backend Setup
 ```bash
 cd backend/
